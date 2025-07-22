@@ -234,13 +234,46 @@ Respond with the appropriate JSON format based on the user's input and context.
             
             # Try to parse the JSON response
             try:
-                parsed_response = json.loads(response.content)
-                return self._process_agent_response(parsed_response, user_token)
+                # Clean the response content by extracting JSON from the text
+                response_text = response.content.strip()
+                
+                # Look for JSON object in the response (starts with { and ends with })
+                json_start = response_text.find('{')
+                json_end = response_text.rfind('}') + 1
+                
+                if json_start != -1 and json_end > json_start:
+                    json_text = response_text[json_start:json_end]
+                    parsed_response = json.loads(json_text)
+                    return self._process_agent_response(parsed_response, user_token)
+                else:
+                    # If no JSON found, try parsing the entire content
+                    parsed_response = json.loads(response_text)
+                    return self._process_agent_response(parsed_response, user_token)
+                    
             except json.JSONDecodeError:
-                # Fallback if JSON parsing fails
+                # Fallback if JSON parsing fails - extract just the message if possible
+                response_text = response.content.strip()
+                
+                # Try to extract message from text response
+                if "Response:" in response_text:
+                    # Remove "Response:" prefix if present
+                    response_text = response_text.split("Response:", 1)[-1].strip()
+                
+                # Try one more time to parse as JSON
+                try:
+                    json_start = response_text.find('{')
+                    json_end = response_text.rfind('}') + 1
+                    if json_start != -1 and json_end > json_start:
+                        json_text = response_text[json_start:json_end]
+                        parsed_response = json.loads(json_text)
+                        return self._process_agent_response(parsed_response, user_token)
+                except:
+                    pass
+                
+                # Final fallback - return clean message
                 return {
                     "response_type": "general",
-                    "message": response.content,
+                    "message": response_text,
                     "transaction_data": None,
                     "status": "success"
                 }

@@ -721,4 +721,4 @@ def execute_graph(thread_id: str, user_input: str, user_token: str = None) -> st
 
     return response
 
-##lbbankingbot.streamlit.app
+##bankingagent.streamlit.app
