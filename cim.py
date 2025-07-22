@@ -39,13 +39,18 @@ load_dotenv(override=True)
 #llm = ChatHuggingFace(llm=pipe, temperature=0)
 
 
+import streamlit as st
+
+# Load the API key securely
+groq_api_key = st.secrets["GROQ_API_KEY"]
+
 # Get the corrected API key
-groq_key = os.getenv("GROQ_API_KEY", "").strip()
+#groq_key = os.getenv("GROQ_API_KEY", "").strip()
 
 llm = init_chat_model(
     "llama3-70b-8192", 
     model_provider="groq", 
-    api_key=groq_key,  # Explicitly pass the corrected API key
+    api_key=groq_api_key,  # Explicitly pass the corrected API key
     temperature=0.5
 )
 # Initialize LLM
