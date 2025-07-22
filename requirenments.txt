@@ -1,0 +1,9 @@
+python=3.12
+requests python-dotenv typing-extensions langgraph langchain-openai langchain-core
+jwt
+langchain
+-U langchain-groq
+-U langchain-deepseek
+-U langchain-huggingface
+transformers
+torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
