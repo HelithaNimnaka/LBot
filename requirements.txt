@@ -11,3 +11,4 @@ langchain-groq
 langchain-deepseek
 langchain-huggingface
 transformers
+protobuf>=3.19.0,<5.0.0
