@@ -81,7 +81,7 @@ class TransferState(TypedDict):
 def get_user_primary_account(user_token: str) -> str:
     """Fetch the user's primary account ID via API."""
     try:
-        api_key = os.getenv("CIM_API_KEY")
+        api_key = st.secrets["CIM_API_KEY"]
         api_url = "https://api.cim.example.com/api/balance"
 
         headers = {
@@ -720,3 +720,5 @@ def execute_graph(thread_id: str, user_input: str, user_token: str = None) -> st
         response += f" Navigate to: {redirect_url}"
 
     return response
+
+##lbbankingbot.streamlit.app
